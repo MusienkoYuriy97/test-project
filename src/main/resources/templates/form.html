@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email</title>
+</head>
+<body>
+Please enter your name and pick the Sectors you are currently involved in.
+<br>
+<br>
+<form action="#" th:action="@{/form}"  th:object="${formRequest}" method="post">
+    <div>
+        <label for="userName">Username</label>
+        <input type="text" th:field="*{userName}" id="userName">
+        <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"/>
+    </div>
+
+    <br>
+    <br>
+    Sectors:
+    <select th:field="*{categoryUuid}" multiple="" size="5">
+        <span th:each="category : ${categories}">
+            <option th:value="${category.getUuid()}" th:text="${category.getName()}" />
+            <th:block th:each="child1 : ${category.getChildCategories()}">
+                <option th:value="${child1.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;' + child1.getName()}" />
+                <th:block th:each="child2 : ${child1.getChildCategories()}">
+                    <option th:value="${child2.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + child2.getName()}" />
+                    <option th:each="child3 : ${child2.getChildCategories()}" th:value="${child3.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + child3.getName()}" />
+                </th:block>
+            </th:block>
+        </span>
+    </select>
+    <td th:if="${#fields.hasErrors('categoryUuid')}" th:errors="*{categoryUuid}"/>
+
+    <br>
+    <br>
+    <input type="checkbox" th:field="*{agreeToTerms}" > Agree to terms
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
