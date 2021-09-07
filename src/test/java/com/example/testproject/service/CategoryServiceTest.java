@@ -3,29 +3,29 @@ package com.example.testproject.service;
 import com.example.testproject.exception.CategoryNotFoundException;
 import com.example.testproject.model.Category;
 import com.example.testproject.repository.CategoryRepository;
-import com.example.testproject.utils.ObjectCreator;
-import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.ArrayList;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.example.testproject.utils.ObjectCreator.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+
 class CategoryServiceTest {
-    @Autowired
+    @InjectMocks
     private CategoryService categoryService;
-    @MockBean
+    @Mock
     private CategoryRepository categoryRepository;
+
+    @BeforeEach
+    public void initMock(){
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void getAll() {
