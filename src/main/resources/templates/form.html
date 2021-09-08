@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Email</title>
@@ -12,31 +12,33 @@ Please enter your name and pick the Sectors you are currently involved in.
     <div>
         <label for="userName">Username</label>
         <input type="text" th:field="*{userName}" id="userName">
-        <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"/>
+        <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></td>
     </div>
-
     <br>
     <br>
-    Sectors:
-    <select th:field="*{categoryUuid}" multiple="" size="5" th:fragment="submenu" th:with="mycounter=${''}">
-        <ul>
-            <li th:each="cat : ${categories} " >
-                <option th:value="${cat.getUuid()}" th:text="${mycounter + cat.getName()}" />
-                <div th:with="categories = ${cat.getChildCategories()}, mycounter = ${mycounter + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}" th:include="form :: submenu"></div>
-            </li>
-        </ul>
-    </select>
-
-
-
-    <td th:if="${#fields.hasErrors('categoryUuid')}" th:errors="*{categoryUuid}"/>
-
+    <div>
+        Sectors:
+        <label>
+            <select th:field="*{categoryUuid}" multiple="" size="5" th:fragment="submenu" th:with="mycounter=${''}">
+                <ul>
+                    <li th:each="cat : ${categories} " >
+                        <option th:value="${cat.getUuid()}" th:text="${mycounter + cat.getName()}"></option>
+                        <div th:with="categories = ${cat.getChildCategories()}, mycounter = ${mycounter + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}" th:include="form :: submenu"></div>
+                    </li>
+                </ul>
+            </select>
+        </label>
+        <td th:if="${#fields.hasErrors('categoryUuid')}" th:errors="*{categoryUuid}"></td>
+    </div>
     <br>
     <br>
-    <input type="checkbox" th:field="*{agreeToTerms}" > Agree to terms
+    <label for="agreeToTerms">Agree to terms</label>
+    <input type="checkbox" th:field="*{agreeToTerms}" id="agreeToTerms">
     <br>
     <br>
-    <button type="submit">Submit</button>
+    <button type="submit">
+        Submit
+    </button>
 </form>
 </body>
 </html>
