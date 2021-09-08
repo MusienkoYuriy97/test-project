@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Email</title>
@@ -18,18 +18,17 @@ Please enter your name and pick the Sectors you are currently involved in.
     <br>
     <br>
     Sectors:
-    <select th:field="*{categoryUuid}" multiple="" size="5">
-        <span th:each="category : ${categories}">
-            <option th:value="${category.getUuid()}" th:text="${category.getName()}" />
-            <th:block th:each="child1 : ${category.getChildCategories()}">
-                <option th:value="${child1.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;' + child1.getName()}" />
-                <th:block th:each="child2 : ${child1.getChildCategories()}">
-                    <option th:value="${child2.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + child2.getName()}" />
-                    <option th:each="child3 : ${child2.getChildCategories()}" th:value="${child3.getUuid()}" th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + child3.getName()}" />
-                </th:block>
-            </th:block>
-        </span>
+    <select th:field="*{categoryUuid}" multiple="" size="5" th:fragment="submenu" th:with="mycounter=${''}">
+        <ul>
+            <li th:each="cat : ${categories} " >
+                <option th:value="${cat.getUuid()}" th:text="${mycounter + cat.getName()}" />
+                <div th:with="categories = ${cat.getChildCategories()}, mycounter = ${mycounter + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}" th:include="form :: submenu"></div>
+            </li>
+        </ul>
     </select>
+
+
+
     <td th:if="${#fields.hasErrors('categoryUuid')}" th:errors="*{categoryUuid}"/>
 
     <br>
